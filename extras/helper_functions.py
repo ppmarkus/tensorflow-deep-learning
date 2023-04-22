@@ -43,6 +43,7 @@ def load_and_prep_image(filename, img_shape=224, scale=True):
   else:
     return img
 
+# we need to make some changes to our make_confusion _matrix_function to ensure the x labels print vertically or at an angle
 # Note: The following confusion matrix code is a remix of Scikit-Learn's 
 # plot_confusion_matrix function - https://scikit-learn.org/stable/modules/generated/sklearn.metrics.plot_confusion_matrix.html
 import itertools
@@ -105,6 +106,13 @@ def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_s
   ax.xaxis.set_label_position("bottom")
   ax.xaxis.tick_bottom()
 
+  ## changed (plot x-labels vertically) ##
+  plt.xticks(rotation=70, fontsize=text_size)
+  plt.yticks(fontsize=text_size)
+
+  # displaying the title
+  plt.title("Confusion Matrix", fontsize = text_size + 10)
+
   # Set the threshold for different colors
   threshold = (cm.max() + cm.min()) / 2.
 
@@ -123,7 +131,7 @@ def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_s
 
   # Save the figure to the current working directory
   if savefig:
-    fig.savefig("confusion_matrix.png")
+      fig.savefig("confusion_matrix.png")
   
 # Make a function to predict on images and plot them (works with multi-class)
 def pred_and_plot(model, filename, class_names):
