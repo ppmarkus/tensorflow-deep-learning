@@ -3,6 +3,22 @@
 
 import tensorflow as tf
 
+import sys
+
+def sizeof_fmt(num, suffix='B'):
+    ''' by Fred Cirera,  https://stackoverflow.com/a/1094933/1870254, modified'''
+    for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
+        if abs(num) < 1024.0:
+            return "%3.1f %s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f %s%s" % (num, 'Yi', suffix)
+  
+def list_variables_and_size():
+  ### get size of variables in colab
+  for name, size in sorted(((name, sys.getsizeof(value)) for name, value in list(
+                            locals().items())), key= lambda x: -x[1])[:10]:
+      print("{:>30}: {:>8}".format(name, sizeof_fmt(size)))
+
 # Create a function to import an image and resize it to be able to be used with our model
 def load_and_prep_image(filename, img_shape=224, scale=True):
   """
